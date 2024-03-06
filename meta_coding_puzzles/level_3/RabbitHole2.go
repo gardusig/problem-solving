@@ -64,17 +64,15 @@ func getGraphComponents(N int, t [][]int, finishingTimes []int) [][]int {
 	return components
 }
 
-func dfsTranspose(i int, t [][]int, visited *[]bool, component *[]int) int32 {
-	size := int32(1)
+func dfsTranspose(i int, t [][]int, visited *[]bool, component *[]int) {
 	(*visited)[i] = true
 	(*component) = append(*component, i)
 	for _, j := range t[i] {
 		if (*visited)[j] {
 			continue
 		}
-		size += dfsTranspose(j, t, visited, component)
+		dfsTranspose(j, t, visited, component)
 	}
-	return size
 }
 
 func getCondensedGraph(graph [][]int, components [][]int) [][]int {
