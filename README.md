@@ -2,7 +2,7 @@
 - **[CodeChef](https://www.codechef.com/users/gardusig):** 1st Division.
 - **[Codeforces](https://codeforces.com/profile/gardusig):** 1st Division.
 - **[ICPC Latin America Finals](https://icpc.global/ICPCID/SP7WIXMME8B8):** Competed in 4 regional finals.
-- **[Meta HackerCup](https://www.facebook.com/codingcompetitions/hacker-cup):** Achieved top 2,000 rank for 3 consecutive years, earning a T-shirt as a reward.
+- **[Meta HackerCup](https://www.facebook.com/codingcompetitions/hacker-cup):** Achieved top 2,000 global rank for 3 consecutive years, earning a T-shirt as a reward.
     ![HackerCup](./hacker-cup.jpg)
 
 ## Directory Structure
