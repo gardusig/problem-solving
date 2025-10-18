@@ -10,8 +10,56 @@ import (
 // SOLUTION
 // --------------------------------------------------------------------------------
 
-func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
+func dfs(idx int, visited []bool, height int, input *TestCaseInput) {
+	visited[idx] = true
+	for _, nxtIdx := range []int{idx - 1, idx + 1} {
+		if nxtIdx < 0 || nxtIdx >= input.N {
+			continue
+		}
+		if visited[nxtIdx] {
+			continue
+		}
+		diff := input.arr[idx] - input.arr[nxtIdx]
+		if diff < 0 {
+			diff = -diff
+		}
+		if height < diff {
+			continue
+		}
+		dfs(nxtIdx, visited, height, input)
+	}
+}
 
+func isValid(input *TestCaseInput, height int) bool {
+	visited := make([]bool, input.N)
+	for i := 0; i < input.N; i += 1 {
+		if visited[i] {
+			continue
+		}
+		if height >= input.arr[i] {
+			dfs(i, visited, height, input)
+		}
+	}
+	for i := 0; i < input.N; i += 1 {
+		if !visited[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
+	lo := 1
+	hi := 1123456789
+	for lo <= hi {
+		mid := lo + ((hi - lo) >> 1)
+		if isValid(input, mid) {
+			hi = mid - 1
+		} else {
+			lo = mid + 1
+		}
+	}
+	output.answer = hi + 1
 }
 
 // --------------------------------------------------------------------------------
@@ -19,15 +67,15 @@ func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
 // --------------------------------------------------------------------------------
 
 type TestCaseInput struct {
-	N int
-	A []int
+	N   int
+	arr []int
 }
 
 func readTestCaseInput(input *TestCaseInput) {
 	readInput(&input.N)
 
-	input.A = make([]int, input.N)
-	readInput(input.A)
+	input.arr = make([]int, input.N)
+	readInput(input.arr)
 }
 
 // --------------------------------------------------------------------------------
@@ -35,17 +83,17 @@ func readTestCaseInput(input *TestCaseInput) {
 // --------------------------------------------------------------------------------
 
 type TestCaseOutput struct {
-	invalid bool
+	answer int
 }
 
 func NewTestCaseOutput() *TestCaseOutput {
 	return &TestCaseOutput{
-		invalid: false,
+		answer: 0,
 	}
 }
 
 func printTestCaseOutput(testID int, output *TestCaseOutput) {
-	fmt.Printf("Case #%d: %d\n", testID, output.invalid)
+	fmt.Printf("Case #%d: %d\n", testID, output.answer)
 }
 
 // --------------------------------------------------------------------------------

@@ -11,7 +11,17 @@ import (
 // --------------------------------------------------------------------------------
 
 func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
-
+	mx := 0
+	for i := 1; i < input.N; i += 1 {
+		current := input.arr[i] - input.arr[i-1]
+		if current < 0 {
+			current = -current
+		}
+		if current > mx {
+			mx = current
+		}
+	}
+	output.answer = mx
 }
 
 // --------------------------------------------------------------------------------
@@ -19,15 +29,15 @@ func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
 // --------------------------------------------------------------------------------
 
 type TestCaseInput struct {
-	N int
-	A []int
+	N   int
+	arr []int
 }
 
 func readTestCaseInput(input *TestCaseInput) {
 	readInput(&input.N)
 
-	input.A = make([]int, input.N)
-	readInput(input.A)
+	input.arr = make([]int, input.N)
+	readInput(input.arr)
 }
 
 // --------------------------------------------------------------------------------
@@ -35,17 +45,17 @@ func readTestCaseInput(input *TestCaseInput) {
 // --------------------------------------------------------------------------------
 
 type TestCaseOutput struct {
-	invalid bool
+	answer int
 }
 
 func NewTestCaseOutput() *TestCaseOutput {
 	return &TestCaseOutput{
-		invalid: false,
+		answer: 0,
 	}
 }
 
 func printTestCaseOutput(testID int, output *TestCaseOutput) {
-	fmt.Printf("Case #%d: %d\n", testID, output.invalid)
+	fmt.Printf("Case #%d: %d\n", testID, output.answer)
 }
 
 // --------------------------------------------------------------------------------
