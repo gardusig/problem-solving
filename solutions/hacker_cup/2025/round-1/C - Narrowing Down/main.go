@@ -13,22 +13,26 @@ import (
 const MAX_SIZE = 30
 
 func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
-	bitAccumulatedFrequency := make([][]int, input.N)
+	bitPrefixSum := make([][]int, input.N)
 	for i := 0; i < input.N; i += 1 {
-		bitAccumulatedFrequency[i] = make([]int, MAX_SIZE)
+		bitPrefixSum[i] = make([]int, MAX_SIZE)
 		for bit := 0; bit < MAX_SIZE; bit += 1 {
-			if (input.A[i] & (1 << bit)) != 0 {
-				bitAccumulatedFrequency[i][bit] = 1
-			} else {
-				bitAccumulatedFrequency[i][bit] = 0
+			bitPrefixSum[i][bit] = (input.A[i] & (1 << bit))
+			if bitPrefixSum[i][bit] > 0 {
+				bitPrefixSum[i][bit] = 1
 			}
 			if i > 0 {
-				bitAccumulatedFrequency[i][bit] += bitAccumulatedFrequency[i-1][bit]
+				bitPrefixSum[i][bit] += bitPrefixSum[i-1][bit]
 			}
 		}
 	}
 
 	output.answer = 0
+	for i := 0; i < input.N; i += 1 {
+		size := input.N - i
+		output.answer += ((1 + size) * size) / 2
+	}
+
 	for i := 0; i < input.N; i += 1 {
 		leftmostPositive := -1
 		rightmostPositive := -1
@@ -43,20 +47,17 @@ func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
 			}
 
 			for bit := 0; bit < MAX_SIZE; bit += 1 {
-				total := bitAccumulatedFrequency[j][bit]
+				total := bitPrefixSum[j][bit]
 				if i > 0 {
-					total -= bitAccumulatedFrequency[i-1][bit]
+					total -= bitPrefixSum[i-1][bit]
 				}
 				if (total & 1) != 0 {
 					isValid = false
 				}
 			}
-			if !isValid {
-				output.answer += (j - i + 1)
-				continue
-			}
 
-			if leftmostPositive != -1 && rightmostPositive != -1 {
+			if isValid {
+				output.answer -= (j - i + 1)
 				output.answer += (rightmostPositive - leftmostPositive)
 			}
 		}
