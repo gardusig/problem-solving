@@ -34,31 +34,15 @@ func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
 	}
 
 	for i := 0; i < input.N; i += 1 {
-		leftmostPositive := -1
-		rightmostPositive := -1
-		for j := i; j < input.N; j += 1 {
-			isValid := true
-
-			if input.A[j] > 0 {
-				if leftmostPositive == -1 {
-					leftmostPositive = j
-				}
-				rightmostPositive = j
-			}
-
-			for bit := 0; bit < MAX_SIZE; bit += 1 {
+		for bit := 0; bit < MAX_SIZE; bit += 1 {
+			for j := i + 1; j < input.N; j += 1 {
 				total := bitPrefixSum[j][bit]
 				if i > 0 {
 					total -= bitPrefixSum[i-1][bit]
 				}
-				if (total & 1) != 0 {
-					isValid = false
+				if (total & 1) == 0 {
+					fmt.Println("bitPrefixSum:", input.A, ", bit:", bit, ", i:", i, ", j:", j)
 				}
-			}
-
-			if isValid {
-				output.answer -= (j - i + 1)
-				output.answer += (rightmostPositive - leftmostPositive)
 			}
 		}
 	}

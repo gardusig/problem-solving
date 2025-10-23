@@ -10,28 +10,39 @@ import (
 // SOLUTION
 // --------------------------------------------------------------------------------
 
-func canAWin(input *TestCaseInput) bool {
-	bSuffix := 0
-	for i := input.N - 1; i >= 0; i -= 1 {
-		if input.S[i] != 'B' {
-			break
-		}
-		bSuffix += 1
+func solveDp(s string) int {
+	n := len(s)
+	dpA := make([][]int, n+2)
+	dpB := make([][]int, n+2)
+	for i := 0; i < n+2; i++ {
+		dpA[i] = make([]int, n+2)
+		dpB[i] = make([]int, n+2)
 	}
 
-	aPrefix := 0
-	for i := input.N - bSuffix - 1; i >= 0; i -= 1 {
-		if input.S[i] != 'A' {
-			break
+	for length := 1; length <= n; length++ {
+		for l := 1; l+length-1 <= n; l++ {
+			r := l + length - 1
+
+			resA := dpA[l+1][r]
+			if s[l-1] == 'A' {
+				resA = max(resA, dpB[l+1][r]^1)
+			}
+			dpA[l][r] = resA
+
+			resB := dpB[l][r-1]
+			if s[r-1] == 'B' {
+				resB = max(resB, dpA[l][r-1]^1)
+			}
+			dpB[l][r] = resB
 		}
-		aPrefix += 1
 	}
 
-	return aPrefix > bSuffix
+	return dpA[1][n]
 }
 
 func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
-	if canAWin(input) {
+	answer := solveDp(input.S)
+	if answer == 1 {
 		output.answer = "Alice"
 	} else {
 		output.answer = "Bob"
@@ -110,7 +121,7 @@ func main() {
 		testCasesOutput[testID-1] = NewTestCaseOutput()
 
 		wg.Add(1)
-		go solveTestCaseAsync(wg, testCaseInput, testCasesOutput[testID-1])
+		solveTestCaseAsync(wg, testCaseInput, testCasesOutput[testID-1])
 	}
 	wg.Wait()
 

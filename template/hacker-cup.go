@@ -15,7 +15,7 @@ func solveTestCase(input *TestCaseInput, output *TestCaseOutput) {
 }
 
 // --------------------------------------------------------------------------------
-// INPUT
+// INPUT | OUTPUT
 // --------------------------------------------------------------------------------
 
 type TestCaseInput struct {
@@ -30,18 +30,8 @@ func readTestCaseInput(input *TestCaseInput) {
 	readInput(input.A)
 }
 
-// --------------------------------------------------------------------------------
-// OUTPUT
-// --------------------------------------------------------------------------------
-
 type TestCaseOutput struct {
 	invalid bool
-}
-
-func NewTestCaseOutput() *TestCaseOutput {
-	return &TestCaseOutput{
-		invalid: false,
-	}
 }
 
 func printTestCaseOutput(testID int, output *TestCaseOutput) {
@@ -51,6 +41,10 @@ func printTestCaseOutput(testID int, output *TestCaseOutput) {
 // --------------------------------------------------------------------------------
 // DO NOT TOUCH
 // --------------------------------------------------------------------------------
+
+func NewTestCaseOutput() *TestCaseOutput {
+	return &TestCaseOutput{}
+}
 
 func readInput(variable any) {
 	v := reflect.ValueOf(variable)
