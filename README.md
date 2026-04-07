@@ -5,5 +5,3 @@
 - **`template/`**: Code templates and files used for competitive programming contests.
 
 ![HackerCup](./hacker-cup.jpg)
-
-![AlgarBalloon](./algar-balloon.jpg)
